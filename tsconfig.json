@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "module": "commonjs",
+    "lib": ["ES6", "DOM"],
+    "strict": true,
+    "typeRoots": ["node_modules/@types"],
+    "target": "ES2017",
+    "alwaysStrict": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "outDir": "lib",
+    "rootDir": "src",
+    "forceConsistentCasingInFileNames":true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "declaration": true
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true 
+    },
+    "exclude": [
+      "node_modules",
+      "lib"
+    ]
+}

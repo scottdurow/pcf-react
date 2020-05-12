@@ -1,0 +1,38 @@
+{
+  "name": "pcf-react",
+  "version": "1.0.0",
+  "description": "Quicker and easier PCF React controls with support for MVVM & unit testing",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "tsc & jest",
+    "prepublishOnly": "tsc"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/npm/cli.git"
+  },  
+  "author": "Scott Durow",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "ste-events": "^1.6.11"
+  },
+  "devDependencies": {
+    "@types/powerapps-component-framework": "^1.2.0",
+    "@types/react-dom": "^16.9.7",
+    "@types/jest": "^24.0.18",
+    "@types/xrm": "^9.0.15",
+    "@typescript-eslint/eslint-plugin": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
+    "eslint": "^6.5.1",
+    "eslint-config-prettier": "^6.4.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "jest": "^24.9.0",
+    "jest-environment-jsdom-fourteen": "^0.1.0",
+    "prettier": "^1.18.2",
+    "ts-jest": "^24.3.0",
+    "typescript": "^3.8.3"
+  }
+}
