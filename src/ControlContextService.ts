@@ -15,6 +15,7 @@ export class ControlContextService {
   onParametersChangedEvent = new EventDispatcher<ControlContextService, ParametersChangedEventArgs>();
   onSaveEvent = new EventDispatcher<ControlContextService, SaveEventArgs>();
   onFullScreenModeChangedEvent = new EventDispatcher<ControlContextService, boolean>();
+  onIsControlDisabledChangedEvent = new EventDispatcher<ControlContextService, boolean>();
   onDataChangedEvent = new EventDispatcher<ControlContextService, DatasetChangedEventArgs>();
   onInit(_context: ComponentFramework.Context<unknown>): void {
     throw new Error("Method not implemented.");

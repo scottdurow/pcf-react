@@ -137,6 +137,10 @@ export class PCFControlContextService extends ControlContextService {
           this.onFullScreenModeChangedEvent.dispatch(this, this.isFullScreen);
           layoutChanged = true;
           break;
+        case "IsControlDisabled":
+          this.onIsControlDisabledChangedEvent.dispatch(this, this.context.mode.isControlDisabled);
+          layoutChanged = true;
+          break;
       }
     }
     return { parametersChanged: parametersChanged, layoutChanged: layoutChanged, datasetChanged: datasetChanged };
