@@ -9,7 +9,7 @@
     "postversion": "git push",
     "test": "tsc & jest",
     "build": "tsc",
-    "prepublishOnly": "tsc"
+    "prepublishOnly": "npm version patch"
   },
   "repository": {
     "type": "git",
