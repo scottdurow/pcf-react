@@ -86,7 +86,6 @@ export class DatasetStateManager {
     if (this.currentPage > 1 && !dataset.paging.hasPreviousPage) {
       this.currentPage = 1;
     } else if (this.currentPage == 1 && dataset.paging.hasPreviousPage) {
-      console.debug("Moving to page 1 because we are in the middle of the pages");
       // We are starting in the middle of the pages (can happen on mobile and Canvas)
       // Move to the first page
       this.setPage(1);

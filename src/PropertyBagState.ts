@@ -6,13 +6,19 @@ export type ConvertToLocalDateDelegate = (
 // Canvas App PCF controls don't get notified of which parameters have chaned
 // Model Driven Apps get passed all parameters on save even if they haven't changed
 export class PCFPropertyBagStateManager {
-  constructor(convertToLocalDate: ConvertToLocalDateDelegate) {
+  private emmitDebug = false;
+  constructor(convertToLocalDate: ConvertToLocalDateDelegate, emmitDebug?: boolean) {
     this.convertToLocalDate = convertToLocalDate;
+    this.emmitDebug = emmitDebug ?? false;
   }
   private convertToLocalDate: ConvertToLocalDateDelegate;
   private updatedValues: Record<string, unknown> = {};
   public currentValues: Record<string, unknown> = {};
-
+  debug(message: string): void {
+    if (this.emmitDebug) {
+      console.debug(message);
+    }
+  }
   public setAllProperties(properties: Record<string, unknown>): void {
     // Set the values
     this.currentValues = {};
@@ -32,7 +38,7 @@ export class PCFPropertyBagStateManager {
         oldValue = (oldValue as Date)?.toISOString();
       }
       if (newValue != oldValue) {
-        console.debug(`PCF:OUT ${property}=${newValue} (new)\nPCF:OUT ${property}=${oldValue} (old)`);
+        this.debug(`PCF:OUT ${property}=${newValue} (new)\nPCF:OUT ${property}=${oldValue} (old)`);
         this.updatedValues[property] = paramRecord[property];
         this.currentValues[property] = paramRecord[property];
       }
@@ -77,7 +83,7 @@ export class PCFPropertyBagStateManager {
             break;
         }
         if (!skip && newValueCompare != oldValueCompare) {
-          console.debug(
+          this.debug(
             `PCF:IN ${propertyName}=${newValueCompare} (new)\nPCF:IN ${propertyName}=${oldValueCompare} (old)`,
           );
           changedProperties.push(propertyName);

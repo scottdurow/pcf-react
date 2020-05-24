@@ -13,16 +13,23 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
   public renderOnParametersChanged = true;
   public renderOnDatasetChanged = true;
   public renderOnLayoutChanged = true;
+  private emmitDebug = false;
   public reactCreateElement?: (
-    serviceProvider: ServiceProvider,
+    container: HTMLDivElement,
     width: number | undefined,
     height: number | undefined,
-    container: HTMLDivElement,
+    serviceProvider: ServiceProvider,
   ) => void;
   public initServiceProvider?: (serviceProvider: ServiceProvider) => void;
 
-  constructor() {
-    console.debug("PCF: constructor");
+  constructor(emmitDebug?: boolean) {
+    this.emmitDebug = emmitDebug ?? false;
+    this.debug("PCF: constructor");
+  }
+  debug(message: string): void {
+    if (this.emmitDebug) {
+      console.debug(message);
+    }
   }
   /**
    * Used to initialize the control instance. Controls can kick off remote server calls and other initialization actions here.
@@ -38,7 +45,7 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
     state: ComponentFramework.Dictionary,
     container: HTMLDivElement,
   ): void {
-    console.debug("PCF: init");
+    this.debug("PCF: init");
     // Add control initialization code
     this.container = container;
     this.context = context;
@@ -68,7 +75,7 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
         this.renderControl();
       }
     } catch (ex) {
-      console.error(`updateView: ${ex.toString()}`);
+      this.debug(`updateView: ${ex.toString()}`);
       console.error(ex);
     }
   }
@@ -80,7 +87,7 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
    * @returns an object based on nomenclature defined in manifest, expecting object[s] for property marked as “bound” or “output”
    */
   public getOutputs(): TOutputs {
-    console.debug("PCF: getOutputs");
+    this.debug("PCF: getOutputs");
     const controlContext = this.getControlContext();
     return controlContext.getOutputs<TOutputs>();
   }
@@ -90,12 +97,12 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
    * i.e. cancelling any pending remote calls, removing listeners, etc.
    */
   public destroy(): void {
-    console.debug("PCF: destroy");
+    this.debug("PCF: destroy");
     ReactDOM.unmountComponentAtNode(this.container);
   }
 
   private renderControl(): void {
-    console.debug(`PCF: renderControl ${this.context.mode.allocatedWidth} x ${this.context.mode.allocatedHeight}`);
+    this.debug(`PCF: renderControl ${this.context.mode.allocatedWidth} x ${this.context.mode.allocatedHeight}`);
     let configuredHeight: number | undefined = undefined;
 
     // If there is a parameter called height in the manifest, pass it to the the control
@@ -113,6 +120,6 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
       throw new Error(`reactCreateElement delegate must be set`);
     }
 
-    this.reactCreateElement(this.serviceProvider, width, height, this.container);
+    this.reactCreateElement(this.container, width, height, this.serviceProvider);
   }
 }

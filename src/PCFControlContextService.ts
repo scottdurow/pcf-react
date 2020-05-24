@@ -15,8 +15,14 @@ export class PCFControlContextService extends ControlContextService {
   private notifyOutputChangedCallback: () => void;
   private datasetColumnsAdded = false;
   private datasetColumns?: string[];
-  constructor(context: ComponentFramework.Context<unknown>, notifyOutputChangedCallback: () => void) {
+  private emmitDebug = false;
+  constructor(
+    context: ComponentFramework.Context<unknown>,
+    notifyOutputChangedCallback: () => void,
+    emmitDebug?: boolean,
+  ) {
     super();
+    this.emmitDebug = emmitDebug ?? false;
     this.notifyOutputChangedCallback = notifyOutputChangedCallback;
     this.context = context;
     this.parameterState = new PCFPropertyBagStateManager(d => this.convertToLocalDate(d));
@@ -28,6 +34,11 @@ export class PCFControlContextService extends ControlContextService {
       id: formContext.mode.contextInfo.entityId,
       entityType: formContext.mode.contextInfo.entityTypeName,
     };
+  }
+  debug(message: string): void {
+    if (this.emmitDebug) {
+      console.debug(message);
+    }
   }
   getIsFullScreen(): boolean {
     return this.isFullScreen;
@@ -95,7 +106,7 @@ export class PCFControlContextService extends ControlContextService {
           if (!datasetChanged && !this.dataset.loading) {
             // Find dataset
             if (this.dataset.records) {
-              console.debug(`PCF: dataset ${this.dataset.sortedRecordIds.length} ${this.dataset.records.length}`);
+              this.debug(`PCF: dataset ${this.dataset.sortedRecordIds.length} ${this.dataset.records.length}`);
             }
 
             this.datasetState.setData(this.dataset);
@@ -110,7 +121,7 @@ export class PCFControlContextService extends ControlContextService {
         case "parameters":
           const updated = this.parameterState.getInboundChangedProperties(this.parameters, updatedPropertiesCorrected);
           if (updated && updated.length > 0) {
-            console.debug("PCF: updated " + updated);
+            this.debug("PCF: updated " + updated);
             this.onParametersChangedEvent.dispatch(this, {
               updated: updated,
               values: this.parameterState.currentValues, // This incudes the corrected dates
@@ -119,7 +130,7 @@ export class PCFControlContextService extends ControlContextService {
           }
           break;
         case "entityId":
-          console.debug("PCF: onSave");
+          this.debug("PCF: onSave");
           // This means the form has been saved so notify
           this.onSaveEvent.dispatch(this, {
             primaryId: this.getPrimaryId(),
@@ -127,12 +138,12 @@ export class PCFControlContextService extends ControlContextService {
           parametersChanged = true;
           break;
         case "fullscreen_open":
-          console.debug("PCF: fullscreen_open");
+          this.debug("PCF: fullscreen_open");
           this.isFullScreen = true;
           layoutChanged = true;
           break;
         case "fullscreen_close":
-          console.debug("PCF: fullscreen_close");
+          this.debug("PCF: fullscreen_close");
           this.isFullScreen = false;
           this.onFullScreenModeChangedEvent.dispatch(this, this.isFullScreen);
           layoutChanged = true;
@@ -158,7 +169,7 @@ export class PCFControlContextService extends ControlContextService {
     this.notifyOutputChangedCallback();
   }
   getOutputs<TOutputs>(): TOutputs {
-    console.debug("PCF: getOutputs");
+    this.debug("PCF: getOutputs");
     return this.parameterState.getOutboundChangedProperties<TOutputs>();
   }
   getUserSettings(): ComponentFramework.UserSettings {
