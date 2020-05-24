@@ -1,6 +1,6 @@
 {
   "name": "pcf-react",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Quicker and easier PCF React controls with support for MVVM & unit testing",
   "main": "lib/index.js",
   "scripts": {
@@ -8,6 +8,7 @@
     "version": "npm run build && git add -A dist",
     "postversion": "git push && git push --tags && rm -rf build/temp",
     "test": "tsc & jest",
+    "build": "tsc",
     "prepublishOnly": "tsc"
   },
   "repository": {
