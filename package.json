@@ -4,6 +4,9 @@
   "description": "Quicker and easier PCF React controls with support for MVVM & unit testing",
   "main": "lib/index.js",
   "scripts": {
+    "preversion": "npm test",
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push && git push --tags && rm -rf build/temp",
     "test": "tsc & jest",
     "prepublishOnly": "tsc"
   },
