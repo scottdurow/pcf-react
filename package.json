@@ -1,6 +1,6 @@
 {
   "name": "pcf-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Quicker and easier PCF React controls with support for MVVM & unit testing",
   "main": "lib/index.js",
   "scripts": {
@@ -8,9 +8,9 @@
     "prepublishOnly": "tsc"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/scottdurow/pcf-react.git"
-  },  
+    "type": "git",
+    "url": "https://github.com/scottdurow/pcf-react.git"
+  },
   "author": "Scott Durow",
   "license": "MIT",
   "dependencies": {
