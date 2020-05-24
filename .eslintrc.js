@@ -22,6 +22,7 @@ module.exports = {
     browser: true,
     jasmine: true,
     jest: true,
+    es6: true
   },
   overrides: [
     {
