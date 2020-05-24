@@ -1,6 +1,6 @@
 {
   "name": "pcf-react",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Quicker and easier PCF React controls with support for MVVM & unit testing",
   "main": "lib/index.js",
   "scripts": {
