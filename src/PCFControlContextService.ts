@@ -141,6 +141,7 @@ export class PCFControlContextService extends ControlContextService {
           this.debug("PCF: fullscreen_open");
           this.isFullScreen = true;
           layoutChanged = true;
+          this.onFullScreenModeChangedEvent.dispatch(this, this.isFullScreen);
           break;
         case "fullscreen_close":
           this.debug("PCF: fullscreen_close");
