@@ -21,7 +21,7 @@ export class PCFTester extends StandardControlReact<IInputs, IOutputs> {
     this.initServiceProvider = serviceProvider => {
       serviceProvider.register("<YOUR VIEWMODEL NAME>", new <YOUR VIEWMODEL>(serviceProvider));
     };
-    this.reactCreateElement = (serviceProvider, width, height, container) => {
+    this.reactCreateElement = (container, width, height, serviceProvider) => {
       ReactDOM.render(
         React.createElement(<YOUR REACT FIELD COMPONENT>, {
           serviceProvider: serviceProvider,
@@ -61,7 +61,7 @@ export class PCFTesterDataset extends StandardControlReact<IInputs, IOutputs> {
       serviceProvider.register("<YOUR VIEWMODEL NAME>", new <YOUR VIEWMODEL>(serviceProvider));
     };
 
-    this.reactCreateElement = (serviceProvider, width, height, container): void => {
+    this.reactCreateElement = (container, width, height, serviceProvider): void => {
       ReactDOM.render(
         React.createElement(<YOUR REACT DATASET COMPONENT>, {
           serviceProvider: serviceProvider,
