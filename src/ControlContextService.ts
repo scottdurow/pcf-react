@@ -3,11 +3,8 @@ import { EventDispatcher } from "ste-events";
 import { ParametersChangedEventArgs } from "./ParametersChangedEventArgs";
 import { RecordsLoadedEventArgs } from "./RecordsLoadedEventArgs";
 import { SaveEventArgs } from "./SaveEventArgs";
+import { DatasetChangedEventArgs } from "./DatasetChangedEventArgs";
 
-export interface DatasetChangedEventArgs {
-  page: number;
-  data: ComponentFramework.PropertyHelper.DataSetApi.EntityRecord[];
-}
 export class ControlContextService {
   static serviceProviderName = "ControlContextService";
   onRecordsLoaded = new EventDispatcher<ControlContextService, RecordsLoadedEventArgs>();
