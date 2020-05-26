@@ -58,6 +58,13 @@ export class DatasetStateManager {
       this.loadPage(this.currentPage);
     }
   }
+  nextPageIncremental(): void {
+    if (this.pendingData) return;
+    if (this.hasNextPage()) {
+      this.currentPage++;
+      this.dataset?.paging.loadNextPage();
+    }
+  }
   loadPage(index: number): void {
     if (this.pendingData) return;
     this.pendingData = true;

@@ -275,6 +275,11 @@ export class PCFControlContextService extends ControlContextService {
   previousPage() {
     this.datasetState.previousPage();
   }
+  nextPageIncremental() {
+    // In Model Driven Apps - using loadNextPage will incrementally load all the records
+    // Useful for infinite scrolling
+    this.datasetState.nextPageIncremental();
+  }
   refreshDataset() {
     this.datasetState.refresh();
   }
