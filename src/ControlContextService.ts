@@ -132,7 +132,13 @@ export class ControlContextService {
   openNewWindow(url: string): void {
     throw new Error("Method not implemented.");
   }
-  showErrorDialog(ex: Error): void {
+  showErrorDialog(ex: Error): Promise<void> {
+    throw new Error("Method not implemented.");
+  }
+  showConfirmDialog(
+    confirmStrings: ComponentFramework.NavigationApi.ConfirmDialogStrings,
+    options?: ComponentFramework.NavigationApi.ConfirmDialogOptions,
+  ): Promise<ComponentFramework.NavigationApi.ConfirmDialogResponse> {
     throw new Error("Method not implemented.");
   }
   showProgressDialog(message: string): void {
