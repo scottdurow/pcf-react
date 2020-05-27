@@ -7,7 +7,7 @@ import { ControlContextService } from "./ControlContextService";
 
 export class StandardControlReact<TInputs, TOutputs> implements ComponentFramework.StandardControl<TInputs, TOutputs> {
   private container!: HTMLDivElement;
-  private context!: ComponentFramework.Context<TInputs>;
+  public context!: ComponentFramework.Context<TInputs>;
   public controlContext!: ControlContextService;
   public serviceProvider = new ServiceProvider();
   public renderOnParametersChanged = true;
