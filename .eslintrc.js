@@ -8,7 +8,7 @@ module.exports = {
     "prettier/@typescript-eslint",
     "prettier/react",
   ],
-  plugins: ["react", "@typescript-eslint", "prettier"],
+  plugins: ["deprecation", "react", "@typescript-eslint", "prettier"],
   parserOptions: {
     project: "./tsconfig.json",
   },
@@ -28,6 +28,7 @@ module.exports = {
     {
       files: ["*.ts"],
       rules: {
+        "deprecation/deprecation": "warn",
         camelcase: [2, { properties: "never" }],
       },
     },
