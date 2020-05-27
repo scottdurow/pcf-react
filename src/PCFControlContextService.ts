@@ -252,12 +252,18 @@ export class PCFControlContextService extends ControlContextService {
   openNewWindow(url: string): void {
     this.context.navigation.openUrl(url);
   }
-  showErrorDialog(ex: Error): void {
+  showErrorDialog(ex: Error): Promise<void> {
     const err = new Error();
-    this.context.navigation.openErrorDialog({
+    return this.context.navigation.openErrorDialog({
       message: ex.message,
       details: JSON.stringify(ex) + ex.stack + err.stack,
     });
+  }
+  showConfirmDialog(
+    confirmStrings: ComponentFramework.NavigationApi.ConfirmDialogStrings,
+    options?: ComponentFramework.NavigationApi.ConfirmDialogOptions,
+  ): Promise<ComponentFramework.NavigationApi.ConfirmDialogResponse> {
+    return this.context.navigation.openConfirmDialog(confirmStrings, options);
   }
   showProgressDialog(message: string): void {
     Xrm.Utility.showProgressIndicator(message);
