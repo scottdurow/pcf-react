@@ -51,39 +51,58 @@ export class DatasetStateManager {
       }
     }
   }
-  nextPage(): void {
-    if (this.pendingData) return;
+  nextPage(): boolean {
+    if (this.pendingData) return false;
     if (this.hasNextPage()) {
       this.currentPage++;
       this.loadPage(this.currentPage);
     }
+    return true;
   }
-  nextPageIncremental(): void {
-    if (this.pendingData) return;
+  nextPageIncremental(): boolean {
+    if (this.pendingData) return false;
     if (this.hasNextPage()) {
       this.currentPage++;
       this.dataset?.paging.loadNextPage();
     }
+    return true;
   }
-  loadPage(index: number): void {
-    if (this.pendingData) return;
+  loadPage(index: number): boolean {
+    if (this.pendingData) return false;
     this.pendingData = true;
     this.currentPage = index;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pagingAny = this.dataset?.paging as any;
     pagingAny.loadExactPage(index);
+    return true;
   }
-  previousPage(): void {
-    if (this.pendingData) return;
+  previousPage(): boolean {
+    if (this.pendingData) return false;
     if (this.hasPreviousPage()) {
       this.currentPage--;
       this.loadPage(this.currentPage);
     }
+    return true;
   }
   setPageSize(pageSize: number): void {
     this.pageSize = pageSize;
     this.dataset?.paging.setPageSize(pageSize);
     this.loadPage(1);
+  }
+  appySort(sort: ComponentFramework.PropertyHelper.DataSetApi.SortStatus[], refresh?: boolean): boolean {
+    if (this.pendingData) {
+      console.log("PCF: Sort pending data");
+      return false;
+    }
+    if (!this.dataset) throw new Error("dataset is not loaded");
+    while (this.dataset.sorting.length > 0) {
+      this.dataset.sorting.pop();
+    }
+    this.dataset.sorting.push(...sort);
+    if (refresh) {
+      this.refresh();
+    }
+    return true;
   }
   setData(dataset: ComponentFramework.PropertyTypes.DataSet): { dataHasChanged: boolean } {
     this.pendingData = false;

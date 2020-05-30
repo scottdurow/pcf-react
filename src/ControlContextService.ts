@@ -86,7 +86,7 @@ export class ControlContextService {
   ): void {
     throw new Error("Method not implemented.");
   }
-  applySort(_sort: { name: string; sortDirection: number }[], _refresh?: boolean): void {
+  applySort(_sort: ComponentFramework.PropertyHelper.DataSetApi.SortStatus[], _refresh?: boolean): boolean {
     throw new Error("Method not implemented.");
   }
   getSort(): ComponentFramework.PropertyHelper.DataSetApi.SortStatus[] {
