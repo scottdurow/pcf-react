@@ -26,7 +26,7 @@ export class PCFControlContextService extends ControlContextService {
     this.emmitDebug = emmitDebug ?? false;
     this.notifyOutputChangedCallback = notifyOutputChangedCallback;
     this.context = context;
-    this.parameterState = new PCFPropertyBagStateManager((d) => this.convertToLocalDate(d));
+    this.parameterState = new PCFPropertyBagStateManager(d => this.convertToLocalDate(d));
     this.datasetState = new DatasetStateManager();
   }
   getPrimaryId(): Xrm.LookupValue {
@@ -225,7 +225,9 @@ export class PCFControlContextService extends ControlContextService {
     );
   }
   openRecord(loicalName: string, id: string): void {
-    const version = Xrm.Utility.getGlobalContext().getVersion().split(".");
+    const version = Xrm.Utility.getGlobalContext()
+      .getVersion()
+      .split(".");
     const mobile = this.context.client.getClient() == "Mobile";
     // MFD (main form dialog) is available past ["9", "1", "0000", "15631"]
     // But doesn't work on mobile client
@@ -274,7 +276,9 @@ export class PCFControlContextService extends ControlContextService {
   closeProgressDialog(): void {
     Xrm.Utility.closeProgressIndicator();
   }
-
+  getIsControlReadOnly(): boolean {
+    return this.context.mode.isControlDisabled;
+  }
   getDataset(): ComponentFramework.PropertyTypes.DataSet {
     if (!this.dataset) throw new Error("dataset is not loaded");
     return this.dataset;
@@ -330,7 +334,7 @@ export class PCFControlContextService extends ControlContextService {
   }
   getCurrentPage(): ComponentFramework.PropertyHelper.DataSetApi.EntityRecord[] {
     if (!this.dataset) throw new Error("Dataset is not loaded");
-    const pageRecords = this.dataset.sortedRecordIds.map((r) => this.dataset?.records[r]);
+    const pageRecords = this.dataset.sortedRecordIds.map(r => this.dataset?.records[r]);
     return pageRecords as ComponentFramework.PropertyHelper.DataSetApi.EntityRecord[];
   }
   setDatasetColumns(logicalName: string[]): void {
@@ -365,7 +369,7 @@ export class PCFControlContextService extends ControlContextService {
   }
   private ensureColumn(logicalName: string): boolean {
     let added = false;
-    if (this.dataset && !this.dataset.columns.find((c) => c.name == logicalName) && this.dataset.addColumn) {
+    if (this.dataset && !this.dataset.columns.find(c => c.name == logicalName) && this.dataset.addColumn) {
       this.dataset.addColumn(logicalName);
       added = true;
     }
