@@ -77,7 +77,7 @@ export class PCFPropertyBagStateManager {
           case "DateAndTime.DateAndTime":
           case "DateAndTime.DateOnly":
             // Adjust for the fact that we get the date values in utc - convert to local time
-            newValueRaw = this.convertToLocalDate(property);
+            newValueRaw = this.convertToLocalDate(property as ComponentFramework.PropertyTypes.DateTimeProperty);
             newValueCompare = (newValueRaw as Date | null)?.toISOString();
             oldValueCompare = (this.currentValues[propertyName] as Date)?.toISOString();
             break;
