@@ -98,7 +98,11 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
    */
   public destroy(): void {
     this.debug("PCF: destroy");
-    ReactDOM.unmountComponentAtNode(this.container);
+    if (this.container.firstElementChild) {
+      // the call to reactCreateElement is expected to add the React Root node to the container
+      // So we unmount the child node added when the PCF component is unmounted
+      ReactDOM.unmountComponentAtNode(this.container.firstElementChild);
+    }
   }
 
   private renderControl(): void {
