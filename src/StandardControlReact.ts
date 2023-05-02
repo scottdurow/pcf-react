@@ -75,7 +75,7 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
         this.renderControl();
       }
     } catch (ex) {
-      this.debug(`updateView: ${ex.toString()}`);
+      this.debug(`updateView: ${ex?.toString()}`);
       console.error(ex);
     }
   }
