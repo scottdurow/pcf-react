@@ -3,21 +3,20 @@ import { MockPCFContext } from "../Mocks/MockPCFContext";
 import { ControlContextService } from "../ControlContextService";
 
 test("OnLoad Event", async () => {
-  const control = new StandardControlReact();
+  const renderDelegate = jest.fn();
+  var reactCreateElement = renderDelegate;
+
+  const control = new StandardControlReact(reactCreateElement);
 
   const mockContext = new MockPCFContext();
   mockContext.mode.trackContainerResize = jest.fn();
   const notifyCallback = jest.fn();
-  const element = document.createElement("div");
-  control.init(mockContext, notifyCallback, {}, element);
+  control.init(mockContext, notifyCallback, {});
 
   const controlContext = control.serviceProvider.get<ControlContextService>(ControlContextService.serviceProviderName);
 
   const onload = jest.fn();
   controlContext.onLoadEvent.subscribe(onload);
-
-  const renderDelegate = jest.fn();
-  control.reactCreateElement = renderDelegate;
 
   // Call first updateView - this is onload
   // Onload should have been called first time update

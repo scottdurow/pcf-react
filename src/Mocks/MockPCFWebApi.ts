@@ -3,17 +3,17 @@ export class MockPCFWebApi implements ComponentFramework.WebApi {
   createRecord(
     entityType: string,
     data: ComponentFramework.WebApi.Entity,
-  ): Promise<ComponentFramework.EntityReference> {
+  ): Promise<ComponentFramework.LookupValue> {
     throw new Error("Method not implemented.");
   }
-  deleteRecord(entityType: string, id: string): Promise<ComponentFramework.EntityReference> {
+  deleteRecord(entityType: string, id: string): Promise<ComponentFramework.LookupValue> {
     throw new Error("Method not implemented.");
   }
   updateRecord(
     entityType: string,
     id: string,
     data: ComponentFramework.WebApi.Entity,
-  ): Promise<ComponentFramework.EntityReference> {
+  ): Promise<ComponentFramework.LookupValue> {
     throw new Error("Method not implemented.");
   }
   retrieveMultipleRecords(

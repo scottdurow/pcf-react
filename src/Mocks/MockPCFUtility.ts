@@ -15,7 +15,7 @@ export class MockPCFUtility implements ComponentFramework.Utility {
   }
   lookupObjects(
     lookupOptions: ComponentFramework.UtilityApi.LookupOptions,
-  ): Promise<ComponentFramework.EntityReference[]> {
+  ): Promise<ComponentFramework.LookupValue[]> {
     throw new Error("Method not implemented.");
   }
 }
