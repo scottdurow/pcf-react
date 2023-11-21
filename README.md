@@ -1,3 +1,5 @@
+**NOTE:** This project is no longer being maintained - there have been many improvements to both PCF (such as virtual controls) and React (such as the advice to use function components with hooks for new projects).
+
 # PCF-REACT
 This library makes it easier to create a React based PCF control with support for the MVVM and ServiceProvider patterns.
 
