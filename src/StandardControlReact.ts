@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as ReactDOM from "react-dom";
 import { ServiceProvider } from "./ServiceProvider";
 import { PCFControlContextService } from "./PCFControlContextService";
 import { ControlContextService } from "./ControlContextService";
 
-export class StandardControlReact<TInputs, TOutputs> implements ComponentFramework.StandardControl<TInputs, TOutputs> {
-  private container!: HTMLDivElement;
+export class StandardControlReact<TInputs, TOutputs> implements ComponentFramework.ReactControl<TInputs, TOutputs> {
+  private reactElement!: React.ReactElement;
   public context!: ComponentFramework.Context<TInputs>;
   public controlContext!: ControlContextService;
   public serviceProvider = new ServiceProvider();
@@ -14,21 +13,21 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
   public renderOnDatasetChanged = true;
   public renderOnLayoutChanged = true;
   private emmitDebug = false;
-  public reactCreateElement?: (
-    container: HTMLDivElement,
-    width: number | undefined,
-    height: number | undefined,
+
+  public reactCreateElement: (
     serviceProvider: ServiceProvider,
-  ) => void;
+  ) => React.ReactElement;
+
   public initServiceProvider?: (serviceProvider: ServiceProvider) => void;
 
-  constructor(emmitDebug?: boolean) {
+  constructor(createElement: (serviceProvider: ServiceProvider) => React.ReactElement, emmitDebug?: boolean) {
     this.emmitDebug = emmitDebug ?? false;
+    this.reactCreateElement = createElement;
     this.debug("PCF: constructor");
   }
   debug(message: string): void {
     if (this.emmitDebug) {
-      console.debug(message);
+      console.log(message);
     }
   }
   /**
@@ -42,12 +41,10 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
   public init(
     context: ComponentFramework.Context<TInputs>,
     notifyOutputChanged: () => void,
-    state: ComponentFramework.Dictionary,
-    container: HTMLDivElement,
+    state: ComponentFramework.Dictionary
   ): void {
     this.debug("PCF: init");
     // Add control initialization code
-    this.container = container;
     this.context = context;
     this.context.mode.trackContainerResize(true);
     this.serviceProvider = new ServiceProvider();
@@ -62,23 +59,28 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
    * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
    * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
    */
-  public updateView(context: ComponentFramework.Context<TInputs>): void {
+  public updateView(context: ComponentFramework.Context<TInputs>): React.ReactElement {
     try {
-      console.debug("PCF: updateView " + JSON.stringify(context.updatedProperties));
+      this.debug("PCF: updateView " + JSON.stringify(context.updatedProperties));
       const controlContext = this.getControlContext();
       const updates = controlContext.onUpdateView(context, context.updatedProperties);
       if (
         (this.renderOnLayoutChanged && updates.layoutChanged) ||
         (this.renderOnDatasetChanged && updates.datasetChanged) ||
-        (this.renderOnParametersChanged && updates.parametersChanged)
+        (this.renderOnParametersChanged && updates.parametersChanged) ||
+        (this.reactElement == null || this.reactElement == undefined)
       ) {
-        this.renderControl();
+        this.reactElement = this.reactCreateElement(this.serviceProvider);
+        return this.reactElement
       }
     } catch (ex) {
-      this.debug(`updateView: ${ex.toString()}`);
+      this.debug(`updateView: ${ex?.toString()}`);
       console.error(ex);
     }
+
+    return this.reactElement;
   }
+
   private getControlContext(): ControlContextService {
     return this.serviceProvider.get<ControlContextService>(ControlContextService.serviceProviderName);
   }
@@ -98,32 +100,5 @@ export class StandardControlReact<TInputs, TOutputs> implements ComponentFramewo
    */
   public destroy(): void {
     this.debug("PCF: destroy");
-    if (this.container.firstElementChild) {
-      // the call to reactCreateElement is expected to add the React Root node to the container
-      // So we unmount the child node added when the PCF component is unmounted
-      ReactDOM.unmountComponentAtNode(this.container.firstElementChild);
-    }
-  }
-
-  private renderControl(): void {
-    this.debug(`PCF: renderControl ${this.context.mode.allocatedWidth} x ${this.context.mode.allocatedHeight}`);
-    let configuredHeight: number | undefined = undefined;
-
-    // If there is a parameter called height in the manifest, pass it to the the control
-    const parametersRecord = (this.context.parameters as unknown) as Record<
-      string,
-      ComponentFramework.PropertyTypes.Property
-    >;
-    if (parametersRecord["height"] && parametersRecord["height"].raw) {
-      configuredHeight = parametersRecord["height"].raw;
-    }
-
-    const width = this.context.mode.allocatedWidth == -1 ? undefined : this.context.mode.allocatedWidth;
-    const height = this.context.mode.allocatedHeight == -1 ? configuredHeight : this.context.mode.allocatedHeight;
-    if (!this.reactCreateElement) {
-      throw new Error(`reactCreateElement delegate must be set`);
-    }
-
-    this.reactCreateElement(this.container, width, height, this.serviceProvider);
   }
 }
